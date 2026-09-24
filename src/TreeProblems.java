@@ -1,5 +1,7 @@
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class TreeProblems {
 
@@ -27,8 +29,15 @@ public class TreeProblems {
 
    If the root is null, do nothing.
    */
-  public static <T> void postOrder(Node<T> root) {
+  public static <T> void postOrder(Node<T> root) { 
+    if (root == null) {
+      return;
   }
+  for (Node<T> child : root.children) { 
+    postOrder(child);
+  }
+  System.out.println(root.value);
+}
 
   /*
    postOrder (Node Version)
@@ -55,6 +64,13 @@ public class TreeProblems {
    5
    */
   public static <T> void postOrder(Map<T, List<T>> tree, T root) {
+    if (tree == null || !tree.containsKey(root)) {
+      return;
+    }
+    for (T child : tree.get(root)) {
+      postOrder(tree, child); 
+  }
+  System.out.println(root);
   }
 
   /*
@@ -72,7 +88,14 @@ public class TreeProblems {
    A null tree should return 0
   */
   public static int sumTree(Node<Integer> root) {
-    return -1;
+  if (root ==  null) {
+      return 0;
+    }
+    int sum = root.value;
+    for (Node<Integer> child : root.children) {
+      sum += sumTree(child);
+    }
+    return sum;
   }
 
   /*
@@ -95,9 +118,16 @@ public class TreeProblems {
    Hint: There's a simple way to do this!
   */
   public static int sumTree(Map<Integer, List<Integer>> tree) {
-    return -1;
+    if (tree == null) {
+      return 0;
+    }
+    int sum = 0;
+    for (Integer key : tree.keySet()) { 
+      sum += key; //add key to sum
+    }
+    return sum;
   }
-
+    
   /*
    findRoot
    -----------
@@ -118,6 +148,18 @@ public class TreeProblems {
    Hint: No recursion needed! Think about how you would do this by hand.
   */
   public static <T> T findRoot(Map<T, List<T>> tree) {
+    // set <T> chilren = hashset
+    Set<T> children = new HashSet<>();
+    for (List<T> k : tree.values()) {
+      // add all children to the set
+      children.addAll(k);
+    }
+    // for T key in tree.keySet() if key is not in children return key
+    for (T key : tree.keySet()) {
+      if (!children.contains(key)) {
+        return key;
+      }
+    }
     return null;
   }
 
@@ -140,7 +182,14 @@ public class TreeProblems {
    
   */
   public static <T> int maxDepth(Node<T> root) {
-    return -1;
+    if (root == null) {
+      return 0;
+    }
+    int depth = 0;
+    for (Node<T> child : root.children) {
+      depth = Math.max(depth, maxDepth(child));
+    }
+    return 1 + depth;
   }
 
   /*
@@ -162,6 +211,29 @@ public class TreeProblems {
    Hint: Use findRoot to start. Then, make a recursive helper method.
   */
   public static int maxDepth(Map<String, List<String>> tree) {
-    return -1;
+    if (tree == null || tree.isEmpty()) {
+      return 0; }
+
+    String root = findRoot(tree);
+    return maxDepthFromRoot(tree, root);
+  }
+
+  // helper method 
+  // private static maxdepth list<string> tree, string root
+  // if root is null or tree does not contain root return 0
+  private static int maxDepthFromRoot(Map<String, List<String>> tree, String root) {
+    if (root == null || !tree.containsKey(root)) {
+      return 0;
+
+      // int depth = 0
+      // string child : tree .get(root)
+      // depth = max(depth, maxDepthFromRoot(tree, child))
+      // return 1 + depth
+    }
+    int depth = 0;
+    for (String child : tree.get(root)) {
+      depth = Math.max(depth, maxDepthFromRoot(tree, child));
+    }
+    return 1 + depth;
   }
 }
