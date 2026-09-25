@@ -28,10 +28,14 @@ public class TreeProblems {
    If the root is null, do nothing.
    */
   public static <T> void postOrder(Node<T> root) {
+    if (root == null) return;
+    
+    for (Node<T> child : root.children) postOrder(child);
+    System.out.println(root.value);
   }
 
   /*
-   postOrder (Node Version)
+   postOrder (Map Version)
    -----------
    Given the root of a tree print out the values of the nodes in post-order.
    Print each value on a separate line.
