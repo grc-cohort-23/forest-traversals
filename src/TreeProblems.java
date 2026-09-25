@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -199,6 +200,20 @@ public class TreeProblems {
    Hint: Use findRoot to start. Then, make a recursive helper method.
   */
   public static int maxDepth(Map<String, List<String>> tree) {
-    return -1;
+    if (tree == null) return 0;
+    String root = findRoot(tree);
+
+    return maxDepth(tree,root);
+  }
+
+  private static int maxDepth(Map<String, List<String>> tree, String root) {
+    if (root == null) return 0;
+    int maxDepth = 0;
+
+    for (String child : tree.get(root)) {
+      maxDepth = Math.max(maxDepth, maxDepth(tree,child));
+    }
+
+    return maxDepth+1;
   }
 }
