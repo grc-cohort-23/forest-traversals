@@ -131,25 +131,24 @@ public class TreeProblems {
    Hint: No recursion needed! Think about how you would do this by hand.
   */
   public static <T> T findRoot(Map<T, List<T>> tree) {
-    Set<T> eliminate = new HashSet<>();
-    Set<T> roots = tree.keySet();
+    Set<T> notRoots = new HashSet<>();
+    T root = null;
 
-    // collect all nodes
-    for (T node : roots) {
+    // collect all non-root nodes
+    for (T node : tree.keySet()) {
       for (T val : tree.get(node)) {
-        eliminate.add(val);
+        notRoots.add(val);
       }
     }
 
-    // remove non-roots
-    for (T notRoot : eliminate) {
-      if (roots.contains(notRoot)) {
-        roots.remove(notRoot);
+    // if possibleRoot is not in notRoot set, we have our root!
+    for (T possibleRoot : tree.keySet()) {
+      if (!notRoots.contains(possibleRoot)) {
+        root = possibleRoot;
       }
     }
 
-    // set should only contain one value, our root, so just return it
-    return roots.iterator().next();
+    return root;
   }
 
   /*
