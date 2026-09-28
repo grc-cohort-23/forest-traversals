@@ -1,5 +1,8 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 
 public class TreeProblems {
 
@@ -28,6 +31,13 @@ public class TreeProblems {
    If the root is null, do nothing.
    */
   public static <T> void postOrder(Node<T> root) {
+    if(root==null) return;
+
+    for(Node<T> child : root.children){
+      postOrder(child);
+    }
+
+    System.out.println(root.value);
   }
 
   /*
@@ -55,6 +65,13 @@ public class TreeProblems {
    5
    */
   public static <T> void postOrder(Map<T, List<T>> tree, T root) {
+    if(tree==null || root==null || !tree.containsKey(root)) return;
+
+    for(T child : tree.getOrDefault(root, new ArrayList<>())){
+      postOrder(tree, child);
+    }
+
+    System.out.println(root);
   }
 
   /*
@@ -72,7 +89,15 @@ public class TreeProblems {
    A null tree should return 0
   */
   public static int sumTree(Node<Integer> root) {
-    return -1;
+    if(root==null) return 0;
+
+    int total = root.value;
+
+    for(Node<Integer> child : root.children){
+      total += sumTree(child);
+    }
+    
+    return total;
   }
 
   /*
@@ -95,7 +120,14 @@ public class TreeProblems {
    Hint: There's a simple way to do this!
   */
   public static int sumTree(Map<Integer, List<Integer>> tree) {
-    return -1;
+    if(tree==null) return 0;
+
+    int total = 0;
+
+    for(Integer child : tree.keySet()){
+      total += child;
+    }
+    return total;
   }
 
   /*
@@ -118,7 +150,13 @@ public class TreeProblems {
    Hint: No recursion needed! Think about how you would do this by hand.
   */
   public static <T> T findRoot(Map<T, List<T>> tree) {
-    return null;
+    Set<T> roots = new HashSet<>(tree.keySet());
+
+    for(List<T> children : tree.values()){
+      roots.removeAll(children);
+    }
+
+    return roots.iterator().next();
   }
 
   /*
@@ -140,7 +178,15 @@ public class TreeProblems {
    
   */
   public static <T> int maxDepth(Node<T> root) {
-    return -1;
+    if(root==null) return 0;
+    int levels = 1;
+
+    for(Node<T> child : root.children){
+      maxDepth(child);
+      levels++;
+    }
+    
+    return levels;
   }
 
   /*
