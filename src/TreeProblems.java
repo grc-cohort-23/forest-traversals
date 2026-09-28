@@ -28,6 +28,13 @@ public class TreeProblems {
    If the root is null, do nothing.
    */
   public static <T> void postOrder(Node<T> root) {
+
+    if (root == null) return;
+    for (Node<T> child: root.children) {
+      postOrder(child);
+      
+    }
+    System.out.println(root.value);
   }
 
   /*
@@ -55,6 +62,15 @@ public class TreeProblems {
    5
    */
   public static <T> void postOrder(Map<T, List<T>> tree, T root) {
+    if (tree == null || root == null) return;
+
+    for (T child : tree.get(root)) {
+      postOrder(tree, child);
+
+    }
+
+    System.out.println(root);
+
   }
 
   /*
@@ -72,7 +88,13 @@ public class TreeProblems {
    A null tree should return 0
   */
   public static int sumTree(Node<Integer> root) {
-    return -1;
+    
+    if (root == null) return 0;
+    int sum = root.value;
+     for (Node<Integer> child : root.children) {
+        sum += sumTree(child);
+     }
+    return sum;
   }
 
   /*
@@ -95,7 +117,12 @@ public class TreeProblems {
    Hint: There's a simple way to do this!
   */
   public static int sumTree(Map<Integer, List<Integer>> tree) {
-    return -1;
+  if (tree == null) return 0;
+    int sum = 0;
+    for (Integer node : tree.keySet()) {
+      sum += node;
+    }
+    return sum;
   }
 
   /*
@@ -118,6 +145,20 @@ public class TreeProblems {
    Hint: No recursion needed! Think about how you would do this by hand.
   */
   public static <T> T findRoot(Map<T, List<T>> tree) {
+    for (T node : tree.keySet()) {
+      boolean hasParents = false;
+
+      for (List<T> children : tree.values()) {
+        if (children.contains(node)) {
+          hasParents = true;
+          break;
+        }
+      }
+      if (!hasParents) {
+        return node;
+      }
+    }
+
     return null;
   }
 
@@ -140,7 +181,15 @@ public class TreeProblems {
    
   */
   public static <T> int maxDepth(Node<T> root) {
-    return -1;
+    if (root == null) {
+      return 0;
+    }
+    int max = 0;
+    for (Node<T> child : root.children) {
+      max = Math.max(max, maxDepth(child));
+    }
+
+    return 1 + max;
   }
 
   /*
@@ -162,6 +211,18 @@ public class TreeProblems {
    Hint: Use findRoot to start. Then, make a recursive helper method.
   */
   public static int maxDepth(Map<String, List<String>> tree) {
-    return -1;
+    if (tree == null || tree.isEmpty()) return 0;
+    String root = findRoot(tree);
+
+    return maxDepthFinder(tree, root);
+
+    
+  }
+  private static int maxDepthFinder(Map<String, List<String>> tree, String node) {
+    int max = 0;
+    for (String child : tree.get(node)) {
+      max = Math.max(max, maxDepthFinder(tree, child));
+    }
+    return 1 + max;
   }
 }
