@@ -1,3 +1,4 @@
+import java.security.KeyStore.Entry;
 import java.util.List;
 import java.util.Map;
 
@@ -88,7 +89,14 @@ public class TreeProblems {
    A null tree should return 0
   */
   public static int sumTree(Node<Integer> root) {
-    return -1;
+    if(root == null)return 0;
+
+    int sum = 0;
+    for(Node<Integer> child : root.children){
+      sum += sumTree(child);
+    }
+
+    return sum + root.value;
   }
 
   /*
@@ -111,7 +119,19 @@ public class TreeProblems {
    Hint: There's a simple way to do this!
   */
   public static int sumTree(Map<Integer, List<Integer>> tree) {
-    return -1;
+    if(tree == null) return 0;
+    Integer root = findRoot(tree);
+    
+    return sumTree(tree,root);
+  }
+
+  private static int sumTree(Map<Integer,List<Integer>> tree, Integer root){
+    if(tree == null || root == null) return 0;
+    int sum = 0;
+    for(Integer child : tree.get(root)){
+      sum += sumTree(tree,child);
+    }
+    return sum += root;
   }
 
   /*
@@ -134,6 +154,15 @@ public class TreeProblems {
    Hint: No recursion needed! Think about how you would do this by hand.
   */
   public static <T> T findRoot(Map<T, List<T>> tree) {
+    for(T key: tree.keySet()){
+      boolean isRoot = true;
+      for(T key2: tree.keySet()){
+        if(tree.get(key2).contains(key)){
+          isRoot = false;
+        }
+      }
+      if(isRoot)return key;
+    }
     return null;
   }
 
