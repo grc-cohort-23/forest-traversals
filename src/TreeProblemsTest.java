@@ -15,6 +15,7 @@ public class TreeProblemsTest {
 
   @Before
   public void setUpStreams() {
+    baos.reset();
     testOut = new PrintStream(new TeeOutputStream(originalOut, baos));
     System.setOut(testOut);
   }
