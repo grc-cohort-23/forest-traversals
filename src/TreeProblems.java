@@ -28,10 +28,19 @@ public class TreeProblems {
    If the root is null, do nothing.
    */
   public static <T> void postOrder(Node<T> root) {
+    if (root == null) {
+      return;
+    }
+
+    for (Node<T> child : root.children) {
+      postOrder(child);
+    }
+
+    System.out.println(root.value);
   }
 
   /*
-   postOrder (Node Version)
+   postOrder (Map Version)
    -----------
    Given the root of a tree print out the values of the nodes in post-order.
    Print each value on a separate line.
@@ -55,6 +64,19 @@ public class TreeProblems {
    5
    */
   public static <T> void postOrder(Map<T, List<T>> tree, T root) {
+    if (root == null || tree == null) {
+      return;
+    }
+
+    if (!tree.containsKey(root)) {
+      return;
+    }
+
+    for (T child : tree.get(root)) {
+      postOrder(tree, child);
+    }
+
+    System.out.println(root);
   }
 
   /*
@@ -72,7 +94,17 @@ public class TreeProblems {
    A null tree should return 0
   */
   public static int sumTree(Node<Integer> root) {
-    return -1;
+    if (root == null) {
+      return 0;
+    }
+
+    int sum = root.value;
+
+    for (Node<Integer> child : root.children) {
+      sum += sumTree(child);
+    }
+
+    return sum;
   }
 
   /*
@@ -95,7 +127,17 @@ public class TreeProblems {
    Hint: There's a simple way to do this!
   */
   public static int sumTree(Map<Integer, List<Integer>> tree) {
-    return -1;
+    if (tree == null) {
+      return 0;
+    }
+
+    int sum = 0;
+
+    for (Integer value : tree.keySet()) {
+      sum += value;
+    }
+
+    return sum;
   }
 
   /*
@@ -118,6 +160,24 @@ public class TreeProblems {
    Hint: No recursion needed! Think about how you would do this by hand.
   */
   public static <T> T findRoot(Map<T, List<T>> tree) {
+    if (tree == null) {
+      return null;
+    }
+
+    for (T candidate : tree.keySet()) {
+      boolean hasParent = false;
+
+      for (List<T> child : tree.values()) {
+        if (child.contains(candidate)) {
+          hasParent = true;
+        }
+      }
+
+      if (!hasParent) {
+        return candidate;
+      }
+    }
+
     return null;
   }
 
@@ -140,7 +200,21 @@ public class TreeProblems {
    
   */
   public static <T> int maxDepth(Node<T> root) {
-    return -1;
+    int max = 0;
+
+    if (root == null) {
+      return max;
+    }
+
+    for (Node<T> child : root.children) {
+      int depth = maxDepth(child);
+
+      if (depth > max) {
+        max = depth;
+      }
+    }
+
+    return max + 1;
   }
 
   /*
