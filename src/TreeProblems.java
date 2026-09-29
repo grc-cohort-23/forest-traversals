@@ -58,6 +58,10 @@ public class TreeProblems {
    5
    */
   public static <T> void postOrder(Map<T, List<T>> tree, T root) {
+      tree.get(root).forEach(child->{
+          postOrder(tree, child);
+      });
+      System.out.println(root);
   }
 
   /*
