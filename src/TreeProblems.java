@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,18 @@ public class TreeProblems {
    If the root is null, do nothing.
    */
   public static <T> void postOrder(Node<T> root) {
+    if(root == null){
+      return;
+    }
+
+    for(Node<T> node : root.children){
+      postOrder(node);
+    }
+
+    System.out.println(root.value);
+
   }
+
 
   /*
    postOrder (Node Version)
@@ -55,6 +67,15 @@ public class TreeProblems {
    5
    */
   public static <T> void postOrder(Map<T, List<T>> tree, T root) {
+    if(tree == null || root == null){
+      return;
+    }
+
+      for(T child : tree.getOrDefault(root, List.of())){
+    postOrder(tree, child);
+    }
+    System.out.println(root);
+    
   }
 
   /*
@@ -72,7 +93,17 @@ public class TreeProblems {
    A null tree should return 0
   */
   public static int sumTree(Node<Integer> root) {
-    return -1;
+    if(root == null){
+      return 0;
+    }
+    int sum = 0;
+
+    for(Node<Integer> child : root.children) {
+      sum += sumTree(child);
+    }
+
+    return sum;
+    
   }
 
   /*
@@ -95,7 +126,17 @@ public class TreeProblems {
    Hint: There's a simple way to do this!
   */
   public static int sumTree(Map<Integer, List<Integer>> tree) {
-    return -1;
+    if(tree == null){
+      return 0;
+    }
+
+    int sum = 0;
+
+    for( int key : tree.keySet()) {
+      sum += key;
+    }
+
+    return sum;
   }
 
   /*
